@@ -3,25 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embedded Site</title>
+    <title>About Blank Embed</title>
     <style>
-        /* Remove default margin and padding */
+        /* Make sure the page fills the entire screen */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* Disable scrolling */
-        }
-
-        /* Make the iframe fill the whole screen */
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+            overflow: hidden;
         }
     </style>
+    <script>
+        window.onload = function() {
+            // Open a new blank window (about:blank)
+            var newWindow = window.open('about:blank', '_blank');
+            
+            // Add the iframe inside the new window
+            var iframe = newWindow.document.createElement('iframe');
+            iframe.src = "https://live.on.cybertv.tv/embed.html#https://nowgg.lol";
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            newWindow.document.body.appendChild(iframe);
+        };
+    </script>
 </head>
 <body>
-    <iframe src="https://live.on.cybertv.tv/embed.html#https://nowgg.lol"></iframe>
 </body>
 </html>
