@@ -3,31 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Blank Embed</title>
+    <title>Password Protected Page</title>
     <style>
-        /* Make sure the page fills the entire screen */
         body, html {
-            margin: 0;
-            padding: 0;
             height: 100%;
-            overflow: hidden;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .form-container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .error-message {
+            color: red;
+        }
+        .ban-message {
+            color: red;
+            font-size: 20px;
         }
     </style>
-    <script>
-        window.onload = function() {
-            // Open a new blank window (about:blank)
-            var newWindow = window.open('about:blank', '_blank');
-            
-            // Add the iframe inside the new window
-            var iframe = newWindow.document.createElement('iframe');
-            iframe.src = "https://live.on.cybertv.tv/embed.html#https://nowgg.lol";
-            iframe.style.width = "100%";
-            iframe.style.height = "100%";
-            iframe.style.border = "none";
-            newWindow.document.body.appendChild(iframe);
-        };
-    </script>
 </head>
 <body>
+    <div class="container">
+        <div class="form-container" id="form-container">
+            <h2>Please Enter the Password</h2>
+            <input type="text" id="password" maxlength="4" placeholder="Enter 4-digit password" />
+            <button onclick="checkPassword()">Submit</button>
+            <p id="error-message" class="error-message" style="display: none;">Incorrect password. Please try again.</p>
+            <p id="ban-message" class="ban-message" style="display: none;">You have been permanently banned due to too many failed attempts.</p>
+        </div>
+    </div>
+
+    <script>
+        const correctPassword = "4365"; // Correct password
+        const maxAttempts = 10; // Max failed attempts allowed
+        const bannedKey = "banned"; // Key to track ban status
+
+        // Check if the user is banned
+        if (localStorage.getItem(bannedKey)) {
+            document.getElementById("ban-message").style.display = "block";
+            document.getElementById("form-container").style.display = "none";
+        }
+
+        function checkPassword() {
+            const password = document.getElementById("password").value;
+            let failedAttempts = parseInt(localStorage.getItem("failedAttempts")) || 0;
+
+            if (failedAttempts >= maxAttempts) {
+                // Set banned flag permanently
+                localStorage.setItem(bannedKey, "true");
+                document.getElementById("ban-message").style.display = "block";
+                document.getElementById("form-container").style.display = "none";
+                return;
+            }
+
+            if (password === correctPassword) {
+                // Redirect to the embedded site if the password is correct
+                window.location.replace("https://live.on.cybertv.tv/embed.html#https://nowgg.lol");
+            } else {
+                failedAttempts++;
+                localStorage.setItem("failedAttempts", failedAttempts);
+                document.getElementById("error-message").style.display = "block";
+
+                if (failedAttempts >= maxAttempts) {
+                    // Set banned flag permanently
+                    localStorage.setItem(bannedKey, "true");
+                    document.getElementById("ban-message").style.display = "block";
+                    document.getElementById("form-container").style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
 </html>
