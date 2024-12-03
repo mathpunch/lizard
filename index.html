@@ -22,13 +22,6 @@
             border: 1px solid #ddd;
             background-color: #f9f9f9;
         }
-        .error-message {
-            color: red;
-        }
-        .ban-message {
-            color: red;
-            font-size: 20px;
-        }
     </style>
 </head>
 <body>
@@ -38,51 +31,19 @@
             <input type="text" id="password" maxlength="4" placeholder="Enter 4-digit password" />
             <button onclick="checkPassword()">Submit</button>
             <p id="error-message" class="error-message" style="display: none;">Incorrect password. Please try again.</p>
-            <p id="ban-message" class="ban-message" style="display: none;">You have been permanently banned due to too many failed attempts.</p>
         </div>
     </div>
 
     <script>
         const correctPassword = "4365"; // Correct password
-        const maxAttempts = 10; // Max failed attempts allowed
-        const bannedKey = "banned"; // Key to track ban status
-
-        // Check if the user is banned
-        if (localStorage.getItem(bannedKey)) {
-            document.getElementById("ban-message").style.display = "block";
-            document.getElementById("form-container").style.display = "none";
-            console.log("User is banned");
-        }
 
         function checkPassword() {
             const password = document.getElementById("password").value;
-            let failedAttempts = parseInt(localStorage.getItem("failedAttempts")) || 0;
-
-            if (failedAttempts >= maxAttempts) {
-                // Set banned flag permanently
-                localStorage.setItem(bannedKey, "true");
-                document.getElementById("ban-message").style.display = "block";
-                document.getElementById("form-container").style.display = "none";
-                console.log("User banned due to failed attempts");
-                return;
-            }
-
             if (password === correctPassword) {
-                // Redirect to the embedded site if the password is correct
+                // Redirect to the embedded site
                 window.location.replace("https://live.on.cybertv.tv/embed.html#https://nowgg.lol");
-                console.log("Password correct, redirecting...");
             } else {
-                failedAttempts++;
-                localStorage.setItem("failedAttempts", failedAttempts);
-                document.getElementById("error-message").style.display = "block";
-
-                if (failedAttempts >= maxAttempts) {
-                    // Set banned flag permanently
-                    localStorage.setItem(bannedKey, "true");
-                    document.getElementById("ban-message").style.display = "block";
-                    document.getElementById("form-container").style.display = "none";
-                    console.log("User reached max attempts, banning...");
-                }
+                alert("Incorrect password");
             }
         }
     </script>
