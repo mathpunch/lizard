@@ -51,6 +51,7 @@
         if (localStorage.getItem(bannedKey)) {
             document.getElementById("ban-message").style.display = "block";
             document.getElementById("form-container").style.display = "none";
+            console.log("User is banned");
         }
 
         function checkPassword() {
@@ -62,12 +63,14 @@
                 localStorage.setItem(bannedKey, "true");
                 document.getElementById("ban-message").style.display = "block";
                 document.getElementById("form-container").style.display = "none";
+                console.log("User banned due to failed attempts");
                 return;
             }
 
             if (password === correctPassword) {
                 // Redirect to the embedded site if the password is correct
                 window.location.replace("https://live.on.cybertv.tv/embed.html#https://nowgg.lol");
+                console.log("Password correct, redirecting...");
             } else {
                 failedAttempts++;
                 localStorage.setItem("failedAttempts", failedAttempts);
@@ -78,6 +81,7 @@
                     localStorage.setItem(bannedKey, "true");
                     document.getElementById("ban-message").style.display = "block";
                     document.getElementById("form-container").style.display = "none";
+                    console.log("User reached max attempts, banning...");
                 }
             }
         }
